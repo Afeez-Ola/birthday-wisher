@@ -1,33 +1,40 @@
+##################### Hard Starting Project ######################
+
+# 1. Update the birthdays.csv with your friends & family's details. 
+# HINT: Make sure one of the entries matches today's date for testing purposes. 
+
+# 2. Check if today matches a birthday in the birthdays.csv
+# HINT 1: Only the month and day matter. 
+# HINT 2: You could create a dictionary from birthdays.csv that looks like this:
+# birthdays_dict = {
+#     (month, day): data_row
+# }
+# HINT 3: Then you could compare and see if today's month/day matches one of the keys in birthday_dict like this:
+# if (today_month, today_day) in birthdays_dict:
+
+# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
+# HINT: https://www.w3schools.com/python/ref_string_replace.asp
+
+# 4. Send the letter generated in step 3 to that person's email address.
+# HINT: Gmail(smtp.gmail.com), Yahoo(smtp.mail.yahoo.com), Hotmail(smtp.live.com), Outlook(smtp-mail.outlook.com)
+
+
 import smtplib
-import datetime as Datetime
 import random
+import datetime as Datetime
+import pandas
 
-my_email = "afeezbolajiola@gmail.com"
-password = "raafiypvegedssxo"
+birthday_file = pandas.read_csv("birthdays.csv")
+birthdays_dict = {
+    "month": birthday_file["month"].values,
+    "date": birthday_file["day"].values
 
-def getDate():
-    today = Datetime.datetime.today().weekday()
-    return today
+}
 
+today_month = Datetime.datetime.now().month
+today_date = Datetime.datetime.now().day
 
-with open("quotes.txt", "r") as quotes:
-    quote_list = [(quote.replace('"', "")).strip("\n") for quote in (quotes.readlines())]
-    quote = quote_list[random.randint(0, len(quote_list) - 1)]
-
-def mail_quote():
-    print(getDate())
-    if getDate() == 3:
-        try:
-            connection = smtplib.SMTP_SSL("smtp.gmail.com", port=465)
-        except TimeoutError:
-            print(TimeoutError.strerror)
-        else:
-            connection.login(user=my_email, password=password)
-            connection.sendmail(from_addr=my_email, to_addrs="afeezmobolajiola@gmail.com",
-                                msg=f"Subject: DAILY QUOTE \n\n{quote}")
-            connection.close()
-
-
-mail_quote()
-
-
+if today_month in birthdays_dict["month"] and today_date in birthdays_dict["date"]:
+    print(birthday_file[today_month].index())
+else:
+    print("Not your birthday")
