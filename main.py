@@ -23,6 +23,9 @@ import smtplib
 import pandas as pd
 import datetime
 import random
+from dotenv import dotenv_values
+
+env_vars = dotenv_values('.env')
 
 birthday_file = pd.read_csv("birthdays.csv")
 today_month = datetime.datetime.now().month
@@ -46,3 +49,12 @@ with open(letter_templates[random_number]) as letters_file:
     # print(letter_salutation, letters_list)
 final_letter = "".join(letters_list)
 print(final_letter)
+
+smtp_server = "smtp.gmail.com"
+
+connection = smtplib.SMTP_SSL(smtp_server,port=587)
+my_email = env_vars['MY_EMAIL']
+password = env_vars['PASSWORD']
+
+connection.login(user=my_email,password=password)
+connection.sendmail(from_addr=my_email,to_addrs="afeezmobolajiola@gmail.com",msg=final_letter)
