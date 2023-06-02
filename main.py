@@ -52,9 +52,9 @@ print(final_letter)
 
 smtp_server = "smtp.gmail.com"
 
-connection = smtplib.SMTP_SSL(smtp_server,port=587)
+connection = smtplib.SMTP_SSL(smtp_server,)
 my_email = env_vars['MY_EMAIL']
 password = env_vars['PASSWORD']
 
 connection.login(user=my_email,password=password)
-connection.sendmail(from_addr=my_email,to_addrs="afeezmobolajiola@gmail.com",msg=final_letter)
+connection.sendmail(from_addr=my_email,to_addrs="afeezmobolajiola@gmail.com",msg=f"Subject:BIRTHDAY LETTER\n{final_letter}")
