@@ -40,4 +40,8 @@ print(birthdays_dict["month"])
 birthday_months = birthdays_dict["month"].tolist()
 
 letter_templates = ["letter_templates/letter_1.txt","letter_templates/letter_2.txt","letter_templates/letter_3.txt"]
-random_number = random.randint(0,len(letter_templates))
+random_number = random.randint(0,len(letter_templates)-1)
+
+with open(letter_templates[random_number]) as letter:
+    letter_salutation = (letter.readline()).strip("\n")
+
