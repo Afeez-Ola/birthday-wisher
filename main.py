@@ -34,7 +34,10 @@ birthdays_dict = {
 today_month = Datetime.datetime.now().month
 today_date = Datetime.datetime.now().day
 
-if today_month in birthdays_dict["month"] and today_date in birthdays_dict["date"]:
-    print(birthday_file[today_month].index())
-else:
-    print("Not your birthday")
+print(birthday_file["month"].values)
+print(birthdays_dict["month"])
+
+birthday_months = birthdays_dict["month"].tolist()
+
+letter_templates = ["letter_templates/letter_1.txt","letter_templates/letter_2.txt","letter_templates/letter_3.txt"]
+random_number = random.randint(0,len(letter_templates))
