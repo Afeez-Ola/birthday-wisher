@@ -40,7 +40,9 @@ with open(letter_templates[random_number]) as letters_file:
     letters_list = letters_file.readlines()
 
     if birthday_celebrant:
-        letter_salutation = letters_list[0].strip("\n").replace("[NAME]", birthday_celebrant)
+        letter_salutation = letters_list[0].replace("[NAME]", birthday_celebrant)
         letters_list[0] = letter_salutation
 
-    print(letter_salutation, letters_list)
+    # print(letter_salutation, letters_list)
+final_letter = "".join(letters_list)
+print(final_letter)
