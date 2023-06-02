@@ -55,7 +55,7 @@ if today_month in birthday_months and (today_date in birthday_days):
     birthday = (birthday_months.index(today_month))
     birthday_celebrant = (birthday_file["name"][birthday])
 else:
-    # print(today_month, today_date)
+    print(today_month, today_date)
 
 
 letter_salutation = letter_salutation[:5] + birthday_celebrant + letter_salutation[12:]
