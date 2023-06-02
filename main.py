@@ -62,7 +62,7 @@ if not birthday_df.empty:
             connection.login(my_email, password)
 
             # Send an email
-            recipient = "afeezmobolajiola@example.com"
+            recipient = env_vars['RECIPIENT']
             subject = "BIRTHDAY WISHES"
 
             message = f"Subject: {subject}\n\n{final_letter}"
