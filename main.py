@@ -24,6 +24,8 @@ import random
 import datetime as Datetime
 import pandas
 
+birthday_celebrant = ""
+
 birthday_file = pandas.read_csv("birthdays.csv")
 birthdays_dict = {
     "month": birthday_file["month"].values,
@@ -43,21 +45,18 @@ letter_templates = ["letter_templates/letter_1.txt", "letter_templates/letter_2.
 random_number = random.randint(0, len(letter_templates) - 1)
 
 with open(letter_templates[random_number]) as letters:
-    letters_list = letters.readlines()
+    letters_list = [letter for letter in letters]
     print(letters_list)
-    letter_salutation = (letters.readline()).strip("\n")
-    birthday_celebrant = letter_salutation[5:9]
+    letter_salutation = (letters_list[0].strip("\n"))
+    print(letter_salutation)
 
 if today_month in birthday_months and (today_date in birthday_days):
 
     birthday = (birthday_months.index(today_month))
     birthday_celebrant = (birthday_file["name"][birthday])
-    # letter_salutation.replace("[NAME]", birthday_celebrant)
-    # print(letter_salutation)
 else:
     print(today_month, today_date)
 
 
-letter_salutation = letter_salutation[:4] + birthday_celebrant + letter_salutation[12:]
-print(birthday_celebrant)
+letter_salutation = letter_salutation[:5] + birthday_celebrant + letter_salutation[12:]
 print(letter_salutation)
