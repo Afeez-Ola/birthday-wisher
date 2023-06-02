@@ -25,54 +25,51 @@ import datetime
 import random
 from dotenv import dotenv_values
 
+# Load environment variables
 env_vars = dotenv_values('.env')
+my_email = env_vars['MY_EMAIL']
+password = env_vars['PASSWORD']
 
+# Read birthday data from CSV file
 birthday_file = pd.read_csv("birthdays.csv")
 today_month = datetime.datetime.now().month
 today_day = datetime.datetime.now().day
 
+# Filter birthdays for today
 birthday_df = birthday_file[(birthday_file["month"] == today_month) & (birthday_file["day"] == today_day)]
 
 if not birthday_df.empty:
     birthday_celebrant = birthday_df.iloc[0]["name"]
+    letter_templates = ["letter_templates/letter_1.txt", "letter_templates/letter_2.txt", "letter_templates/letter_3.txt"]
+    random_number = random.randint(0, len(letter_templates) - 1)
 
-letter_templates = ["letter_templates/letter_1.txt", "letter_templates/letter_2.txt", "letter_templates/letter_3.txt"]
-random_number = random.randint(0, len(letter_templates) - 1)
+    with open(letter_templates[random_number]) as letters_file:
+        letters_list = letters_file.readlines()
 
-with open(letter_templates[random_number]) as letters_file:
-    letters_list = letters_file.readlines()
+        if birthday_celebrant:
+            letter_salutation = letters_list[0].replace("[NAME]", birthday_celebrant)
+            letters_list[0] = letter_salutation
 
-    if birthday_celebrant:
-        letter_salutation = letters_list[0].replace("[NAME]", birthday_celebrant)
-        letters_list[0] = letter_salutation
+    final_letter = "".join(letters_list)
 
-    # print(letter_salutation, letters_list)
-final_letter = "".join(letters_list)
-print(final_letter)
+    # Create an SMTP connection
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
 
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as connection:
+            connection.starttls()
+            connection.login(my_email, password)
 
-my_email = env_vars['MY_EMAIL']
-password = env_vars['PASSWORD']
-smtp_server = "smtp.gmail.com"
-smtp_port = 587
+            # Send an email
+            recipient = "afeezmobolajiola@example.com"
+            subject = "BIRTHDAY WISHES"
 
-# Create an SMTP connection
-try:
-    connection = smtplib.SMTP_SSL(smtp_server)
-    connection.login(my_email, password)
-except smtplib.SMTPException as e:
-    print("Failed to connect to the SMTP server:", str(e))
-    exit()
+            message = f"Subject: {subject}\n\n{final_letter}"
 
-# Send an email
-recipient = "afeezmobolajiola@example.com"
-subject = "BIRTHDAY WISHES"
-
-message = f"Subject: {subject}\n\n{final_letter}"
-
-try:
-    connection.sendmail(my_email, recipient, message)
-    print("Email sent successfully!")
-except smtplib.SMTPException as e:
-    print("Failed to send email:", str(e))
-
+            connection.sendmail(my_email, recipient, message)
+            print("Email sent successfully!")
+    except smtplib.SMTPException as e:
+        print("Failed to send email:", str(e))
+else:
+    print("No birthdays today.")
