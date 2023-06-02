@@ -20,37 +20,27 @@
 
 
 import smtplib
+import pandas as pd
+import datetime
 import random
-import datetime as Datetime
-import pandas
 
-birthday_celebrant = ""
+birthday_file = pd.read_csv("birthdays.csv")
+today_month = datetime.datetime.now().month
+today_day = datetime.datetime.now().day
 
-birthday_file = pandas.read_csv("birthdays.csv")
-birthdays_dict = {
-    "month": birthday_file["month"].values,
-    "date": birthday_file["day"].values
+birthday_df = birthday_file[(birthday_file["month"] == today_month) & (birthday_file["day"] == today_day)]
 
-}
+if not birthday_df.empty:
+    birthday_celebrant = birthday_df.iloc[0]["name"]
 
-today_month = Datetime.datetime.now().month
-today_date = Datetime.datetime.now().day
-
-print(birthday_file["month"].values)
-print(birthdays_dict["month"])
-
-birthday_months = birthdays_dict["month"].tolist()
-birthday_days = birthdays_dict["date"].tolist()
 letter_templates = ["letter_templates/letter_1.txt", "letter_templates/letter_2.txt", "letter_templates/letter_3.txt"]
 random_number = random.randint(0, len(letter_templates) - 1)
 
-with open(letter_templates[random_number]) as letters:
-    letters_list = [letter for letter in letters]
-    letter_salutation = (letters_list[0].strip("\n"))
+with open(letter_templates[random_number]) as letters_file:
+    letters_list = letters_file.readlines()
 
-    if today_month in birthday_months and (today_date in birthday_days):
-        birthday = (birthday_months.index(today_month))
-        birthday_celebrant = (birthday_file["name"][birthday])
+    if birthday_celebrant:
+        letter_salutation = letters_list[0].strip("\n").replace("[NAME]", birthday_celebrant)
+        letters_list[0] = letter_salutation
 
-    letter_salutation = letter_salutation.replace("[NAME]", birthday_celebrant)
-    print(letter_salutation)
+    print(letter_salutation, letters_list)
