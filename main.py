@@ -50,11 +50,29 @@ with open(letter_templates[random_number]) as letters_file:
 final_letter = "".join(letters_list)
 print(final_letter)
 
-smtp_server = "smtp.gmail.com"
 
-connection = smtplib.SMTP_SSL(smtp_server,)
 my_email = env_vars['MY_EMAIL']
 password = env_vars['PASSWORD']
+smtp_server = "smtp.gmail.com"
+smtp_port = 587
 
-connection.login(user=my_email,password=password)
-connection.sendmail(from_addr=my_email,to_addrs="afeezmobolajiola@gmail.com",msg=f"Subject:BIRTHDAY LETTER\n{final_letter}")
+# Create an SMTP connection
+try:
+    connection = smtplib.SMTP_SSL(smtp_server)
+    connection.login(my_email, password)
+except smtplib.SMTPException as e:
+    print("Failed to connect to the SMTP server:", str(e))
+    exit()
+
+# Send an email
+recipient = "afeezmobolajiola@example.com"
+subject = "BIRTHDAY WISHES"
+
+message = f"Subject: {subject}\n\n{final_letter}"
+
+try:
+    connection.sendmail(my_email, recipient, message)
+    print("Email sent successfully!")
+except smtplib.SMTPException as e:
+    print("Failed to send email:", str(e))
+
