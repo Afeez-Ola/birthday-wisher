@@ -46,17 +46,11 @@ random_number = random.randint(0, len(letter_templates) - 1)
 
 with open(letter_templates[random_number]) as letters:
     letters_list = [letter for letter in letters]
-    print(letters_list)
     letter_salutation = (letters_list[0].strip("\n"))
+
+    if today_month in birthday_months and (today_date in birthday_days):
+        birthday = (birthday_months.index(today_month))
+        birthday_celebrant = (birthday_file["name"][birthday])
+
+    letter_salutation = letter_salutation.replace("[NAME]", birthday_celebrant)
     print(letter_salutation)
-
-if today_month in birthday_months and (today_date in birthday_days):
-
-    birthday = (birthday_months.index(today_month))
-    birthday_celebrant = (birthday_file["name"][birthday])
-else:
-    print(today_month, today_date)
-
-
-letter_salutation = letter_salutation[:5] + birthday_celebrant + letter_salutation[12:]
-print(letter_salutation)
