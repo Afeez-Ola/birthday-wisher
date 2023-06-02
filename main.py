@@ -42,8 +42,10 @@ birthday_days = birthdays_dict["date"].tolist()
 letter_templates = ["letter_templates/letter_1.txt", "letter_templates/letter_2.txt", "letter_templates/letter_3.txt"]
 random_number = random.randint(0, len(letter_templates) - 1)
 
-with open(letter_templates[random_number]) as letter:
-    letter_salutation = (letter.readline()).strip("\n")
+with open(letter_templates[random_number]) as letters:
+    letters_list = letters.readlines()
+    print(letters_list)
+    letter_salutation = (letters.readline()).strip("\n")
     birthday_celebrant = letter_salutation[5:9]
 
 if today_month in birthday_months and (today_date in birthday_days):
@@ -56,6 +58,6 @@ else:
     print(today_month, today_date)
 
 
-letter_salutation = letter_salutation[:4] + birthday_celebrant + letter_salutation[10:]
+letter_salutation = letter_salutation[:4] + birthday_celebrant + letter_salutation[12:]
 print(birthday_celebrant)
 print(letter_salutation)
