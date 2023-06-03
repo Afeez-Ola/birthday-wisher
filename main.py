@@ -23,12 +23,9 @@ import smtplib
 import pandas as pd
 import datetime
 import random
-from dotenv import dotenv_values
 
-# Load environment variables
-env_vars = dotenv_values('.env')
-my_email = env_vars['MY_EMAIL']
-password = env_vars['PASSWORD']
+my_email = "afeezbolajiola@gmail.com"
+password = "tjqmosoplsvebmgv"
 
 # Read birthday data from CSV file
 birthday_file = pd.read_csv("birthdays.csv")
@@ -62,7 +59,7 @@ if not birthday_df.empty:
             connection.login(my_email, password)
 
             # Send an email
-            recipient = env_vars['RECIPIENT']
+            recipient = "afeezmobolajiola@gmail.com"
             subject = "BIRTHDAY WISHES"
 
             message = f"Subject: {subject}\n\n{final_letter}"
